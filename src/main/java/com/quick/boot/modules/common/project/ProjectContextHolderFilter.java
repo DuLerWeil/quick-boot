@@ -43,20 +43,22 @@ public class ProjectContextHolderFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        // 从请求头中获取项目ID
-        String headerProjectId = request.getHeader(CommonConstants.X_PROJECT_ID);
-        log.debug("获取header中的项目ID为:{}", headerProjectId);
+        try {
+            // 从请求头中获取项目ID
+            String headerProjectId = request.getHeader(CommonConstants.X_PROJECT_ID);
+            log.debug("获取header中的项目ID为:{}", headerProjectId);
 
-        // 验证项目ID是否有效（非空且不是"undefined"）
-        if (StringUtils.hasText(headerProjectId) && !UNDEFINED_STR.equals(headerProjectId)) {
-            // 将项目ID设置到线程本地变量中
-            ProjectContextHolder.setProjectId(Long.parseLong(headerProjectId));
+            // 验证项目ID是否有效（非空且不是"undefined"）
+            if (StringUtils.hasText(headerProjectId) && !UNDEFINED_STR.equals(headerProjectId)) {
+                // 将项目ID设置到线程本地变量中
+                ProjectContextHolder.setProjectId(Long.parseLong(headerProjectId));
+            }
+
+            // 继续执行过滤器链
+            filterChain.doFilter(request, response);
+        } finally {
+            // 清理线程本地变量，防止内存泄漏
+            ProjectContextHolder.clear();
         }
-
-        // 继续执行过滤器链
-        filterChain.doFilter(request, response);
-
-        // 清理线程本地变量，防止内存泄漏
-        ProjectContextHolder.clear();
     }
 }
