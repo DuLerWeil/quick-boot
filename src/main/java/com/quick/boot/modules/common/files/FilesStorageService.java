@@ -17,11 +17,10 @@ public interface FilesStorageService {
      * @param bucketName 存储桶名称
      * @param fileName 文件名称
      * @param stream 文件流
-     * @param contextType 文件类型
+     * @param contentType 文件类型
      * @throws Exception
      */
-    void putObject(String bucketName, String fileName, InputStream stream, String contextType)
-            throws Exception;
+    void putObject(String bucketName, String fileName, InputStream stream, String contentType) throws Exception;
 
 
     /**

@@ -29,7 +29,7 @@ public class LocalFilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public void putObject(String bucketName, String fileName, InputStream stream, String contextType) throws Exception {
+    public void putObject(String bucketName, String fileName, InputStream stream, String contentType) throws Exception {
         // 检查存储桶是否存在，如果不存在则创建
         if (!Files.isDirectory(Paths.get(properties.getLocal().getBasePath(), bucketName))) {
             createBucket(bucketName);
