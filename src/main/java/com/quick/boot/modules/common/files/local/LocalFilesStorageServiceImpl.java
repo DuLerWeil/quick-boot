@@ -29,7 +29,7 @@ public class LocalFilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public void putObject(String bucketName, String fileName, InputStream stream, String contentType) throws Exception {
+    public long putObject(String bucketName, String fileName, InputStream stream, String contentType) throws Exception {
         // 检查存储桶是否存在，如果不存在则创建
         if (!Files.isDirectory(Paths.get(properties.getLocal().getBasePath(), bucketName))) {
             createBucket(bucketName);
@@ -42,12 +42,12 @@ public class LocalFilesStorageServiceImpl implements FilesStorageService {
         // 确保项目目录存在
         Files.createDirectories(filePath.getParent());
 
-        Files.copy(stream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        return Files.copy(stream, filePath, StandardCopyOption.REPLACE_EXISTING);
     }
 
     @SneakyThrows
     @Override
-    public S3Object getObject(String bucketName,String dir, String fileName) {
+    public S3Object getObject(String bucketName, String dir, String fileName) {
         S3Object s3Object = new S3Object();
         Path filePath = Paths.get(properties.getLocal().getBasePath(), bucketName, dir, fileName);
         InputStream inputStream = new BufferedInputStream(Files.newInputStream(filePath));

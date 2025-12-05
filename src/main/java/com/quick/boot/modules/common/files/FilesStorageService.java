@@ -18,9 +18,10 @@ public interface FilesStorageService {
      * @param fileName 文件名称
      * @param stream 文件流
      * @param contentType 文件类型
+     * @return the number of bytes read or written
      * @throws Exception
      */
-    void putObject(String bucketName, String fileName, InputStream stream, String contentType) throws Exception;
+    long putObject(String bucketName, String fileName, InputStream stream, String contentType) throws Exception;
 
 
     /**
